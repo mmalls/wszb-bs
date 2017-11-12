@@ -6,9 +6,9 @@ import (
 
 // User table
 type User struct {
-	ID        int `gorm:"primary_key"`
+	ID        int `gorm:"primary_key" json:"id"`
 	Name      string
-	Phone     string
+	Phone     string `gorm:"unique"`
 	Password  string `json:"-"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -42,7 +42,7 @@ type Auth struct {
 }
 
 type LoginLog struct {
-	ID        int `gorm:"primary_key"`
+	ID        int `gorm:"primary_key"  json:"id"`
 	UserID    int
 	IP        string
 	Device    string

@@ -6,13 +6,16 @@ import (
 
 // Order table
 type Order struct {
-	ID        int `gorm:"primary_key"`
-	UserID    int
-	CustomID  int
-	GoodsID   int
-	SellPrice float32
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           int `gorm:"primary_key"  json:"id"`
+	UserID       int `json:"userId"`
+	CustomID     int `json:"customId"`
+	GoodsID      int `json:"goodsId"`
+	SellPrice    float32
+	Quantity     int
+	DiscountType int // 0:percent, reduce
+	Discount     float32
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 // TableName ...
@@ -26,6 +29,9 @@ func (c *Order) ListByUserID() (rows []Order, err error) {
 }
 
 func (c *Order) Save() error {
+	if c.Quantity <= 0 {
+		c.Quantity = 1
+	}
 	return db.Save(c).Error
 }
 

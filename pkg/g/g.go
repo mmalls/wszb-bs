@@ -7,6 +7,8 @@ import (
 
 	"io/ioutil"
 
+	"strings"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -64,16 +66,22 @@ func HandleErr(c *gin.Context, mlog log.Logger, err *error) {
 	if *err == nil {
 		return
 	}
-	switch c.Request.Method {
-	case http.MethodGet, http.MethodPut:
-		if *err == gorm.ErrRecordNotFound {
+
+	e := *err
+	if strings.Contains(e.Error(), "json") {
+		c.Status(http.StatusBadRequest)
+	} else if strings.Contains(e.Error(), "crypto/bcrypt: hashedPassword") {
+		c.Status(http.StatusUnauthorized)
+	} else if e == gorm.ErrRecordNotFound {
+		switch c.Request.Method {
+		case http.MethodGet, http.MethodPut:
 			c.Status(http.StatusNotFound)
-		}
-	case http.MethodDelete:
-		if *err == gorm.ErrRecordNotFound {
+		case http.MethodDelete:
 			c.Status(http.StatusNoContent)
+		default:
+			c.Status(http.StatusInternalServerError)
 		}
-	default:
+	} else {
 		c.Status(http.StatusInternalServerError)
 	}
 

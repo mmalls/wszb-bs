@@ -6,8 +6,6 @@ import (
 
 	"encoding/base64"
 
-	"strings"
-
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -92,7 +90,7 @@ func HandleLogin(c *gin.Context) {
 		return
 	}
 
-	ll := &model.LoginLog{UserID: u.ID, IP: strings.Split(c.Request.RemoteAddr, ":")[0]}
+	ll := &model.LoginLog{UserID: u.ID, IP: c.ClientIP()}
 	if err = ll.Save(); err != nil {
 		return
 	}

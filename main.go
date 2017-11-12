@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/mmalls/comm"
@@ -27,7 +28,7 @@ func main() {
 		mlog.Errorf("Parse config file, %v", err)
 		os.Exit(2)
 	}
-	mlog.Infof("%v", g.Cfg)
+	//mlog.Infof("%v", g.Cfg)
 
 	// connect to databse
 	if err := model.Init(); err != nil {
@@ -40,7 +41,7 @@ func main() {
 	if !g.Cfg.Common.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	r.Use(ginmw.Logger(hlog), gin.Recovery())
+	r.Use(ginmw.Logger(hlog), gin.Recovery(), cors.Default())
 	if err := service.Init(r); err != nil {
 		os.Exit(2)
 	}

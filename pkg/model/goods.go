@@ -6,12 +6,12 @@ import (
 
 // Goods table
 type Goods struct {
-	ID            int `gorm:"primary_key"`
-	UserID        int
-	ChannelID     int
+	ID            int `gorm:"primary_key" json:"id"`
+	UserID        int `json:"userId"`
+	ChannelID     int `json:"channelId"`
 	Name          string
 	Catalog       string
-	Intro         string
+	Intro         string `gorm:"size:512"`
 	SellPrice     float32
 	PurchasePrice float32
 	CreatedAt     time.Time

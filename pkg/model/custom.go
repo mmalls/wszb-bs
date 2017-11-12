@@ -6,13 +6,13 @@ import (
 
 // Custom table
 type Custom struct {
-	ID        int `gorm:"primary_key"`
-	UserID    int
+	ID        int `gorm:"primary_key" json:"id"`
+	UserID    int `json:"userId"`
 	Weixin    string
-	Phone     string
+	Phone     string `gorm:"unique"`
 	Address   string
 	PostCode  string
-	Notes     string
+	Notes     string `gorm:"size:512"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

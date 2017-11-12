@@ -10,4 +10,4 @@ database:
 jwt:
   public_key: conf/jwt_pub.pem
   private_key: conf/jwt_pri.pem
-  enable: true
+  enable: false
