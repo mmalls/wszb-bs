@@ -6,12 +6,12 @@ import (
 
 // User table
 type User struct {
-	ID        int `gorm:"primary_key" json:"id"`
-	Name      string
-	Phone     string `gorm:"unique"`
-	Password  string `json:"-"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        int       `gorm:"primary_key" json:"id"`
+	Name      string    `json:"name"`
+	Phone     string    `gorm:"unique" json:"phone"`
+	Password  string    `json:"-"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 // TableName ...
@@ -37,16 +37,16 @@ func (c *User) Delete() error {
 
 // Auth ...
 type Auth struct {
-	Phone    string
-	Password string
+	Phone    string `json:"phone"`
+	Password string `json:"password"`
 }
 
 type LoginLog struct {
-	ID        int `gorm:"primary_key"  json:"id"`
-	UserID    int
-	IP        string
-	Device    string
-	CreatedAt time.Time
+	ID        int       `gorm:"primary_key" json:"id"`
+	UserID    int       `json:"userId"`
+	IP        string    `json:"ip"`
+	Device    string    `json:"device"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 // TableName ...

@@ -6,16 +6,16 @@ import (
 
 // Order table
 type Order struct {
-	ID           int `gorm:"primary_key"  json:"id"`
-	UserID       int `json:"userId"`
-	CustomID     int `json:"customId"`
-	GoodsID      int `json:"goodsId"`
-	SellPrice    float32
-	Quantity     int
-	DiscountType int // 0:percent, reduce
-	Discount     float32
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	ID           int       `gorm:"primary_key"  json:"id"`
+	UserID       int       `json:"userId"`
+	CustomID     int       `json:"customId"`
+	GoodsID      int       `json:"goodsId"`
+	SellPrice    float32   `json:"sellPrice"`
+	Quantity     int       `json:"quantity"`
+	DiscountType int       `json:"discountType"` // 0:percent, reduce
+	Discount     float32   `json:"discount"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 // TableName ...

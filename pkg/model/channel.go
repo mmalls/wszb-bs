@@ -6,13 +6,13 @@ import (
 
 // Channel table
 type Channel struct {
-	ID        int `gorm:"primary_key" json:"id"`
-	UserID    int `json:"userId"`
-	Name      string
-	Phone     string `gorm:"unique"`
-	Intro     string `gorm:"size:512"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        int       `gorm:"primary_key" json:"id"`
+	UserID    int       `json:"userId"`
+	Name      string    `json:"name"`
+	Phone     string    `gorm:"unique" json:"phone"`
+	Intro     string    `gorm:"size:512" json:"intro"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 // TableName ...
