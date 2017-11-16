@@ -18,13 +18,23 @@ type Goods struct {
 	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
+type GoodsWitchChl struct {
+	Goods
+	ChannelName string `gorm:"column:cn" json:"channelName"`
+}
+
 // TableName ...
 func (Goods) TableName() string {
 	return "wszb_goods"
 }
 
-func (c *Goods) ListByUserID() (rows []Goods, err error) {
-	err = db.Where("user_id = ?", c.UserID).Find(&rows).Error
+func (c *Goods) ListByUserID() (rows []GoodsWitchChl, err error) {
+	//err = db.Joins("user_id = ?", c.UserID).Find(&rows).Error
+	err = db.Table("wszb_goods").
+		Select("wszb_goods.*, wszb_channel.name as cn").
+		Where("wszb_goods.user_id = ?", c.UserID).
+		Joins("left join wszb_channel on wszb_channel.id = wszb_goods.channel_id").
+		Scan(&rows).Error
 	return
 }
 

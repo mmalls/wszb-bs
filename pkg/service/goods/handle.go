@@ -22,9 +22,8 @@ func HandleList(c *gin.Context) {
 	userID := c.Param("userId")
 	iuid, _ := strconv.Atoi(userID)
 	o := &model.Goods{UserID: iuid}
-	var row []model.Goods
+	var row []model.GoodsWitchChl
 	if row, err = o.ListByUserID(); err != nil {
-
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"goods": &row})

@@ -10,6 +10,7 @@ type Custom struct {
 	UserID    int       `json:"userId"`
 	Weixin    string    `json:"weixin"`
 	Phone     string    `gorm:"unique" json:"phone"`
+	Receiver  string    `json:"receiver"`
 	Address   string    `json:"address"`
 	PostCode  string    `json:"postCode"`
 	Notes     string    `gorm:"size:512" json:"notes"`

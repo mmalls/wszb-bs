@@ -26,7 +26,7 @@ func HandleList(c *gin.Context) {
 	if row, err = o.ListByUserID(); err != nil {
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"channles": &row})
+	c.JSON(http.StatusOK, gin.H{"channels": &row})
 }
 
 // HandleCreate api: Post /rest/v1/users/{userId}/channels

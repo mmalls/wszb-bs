@@ -39,9 +39,9 @@ func openDB() (err error) {
 		return err
 	}
 	db.SetLogger(logger{})
-	if g.Cfg.Common.Debug {
-		db = db.Debug()
-	}
+	//if g.Cfg.Common.Debug {
+	db = db.Debug()
+	//}
 	db = db.AutoMigrate(&User{},
 		&Custom{},
 		&Channel{},

@@ -22,12 +22,12 @@ func HandleList(c *gin.Context) {
 	userID := c.Param("userId")
 	iuid, _ := strconv.Atoi(userID)
 	o := &model.Order{UserID: iuid}
-	var row []model.Order
+	var row []model.OrderWithInfo
 
 	if row, err = o.ListByUserID(); err != nil {
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"orders:": &row})
+	c.JSON(http.StatusOK, gin.H{"orders": &row})
 }
 
 // HandleCreate api: Post /rest/v1/users/{userId}/orders
