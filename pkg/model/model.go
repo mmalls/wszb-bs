@@ -47,6 +47,7 @@ func openDB() (err error) {
 		&Channel{},
 		&Goods{},
 		&Order{},
+		&OrderGoods{},
 		&LoginLog{},
 	)
 	return nil

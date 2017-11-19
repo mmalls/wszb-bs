@@ -55,5 +55,6 @@ func apis(r gin.IRouter) {
 	v1auth.POST("/users/:userId/orders", order.HandleCreate)
 	v1auth.PUT("/users/:userId/orders/:orderId", order.HandleUpdate)
 	v1auth.DELETE("/users/:userId/orders/:orderId", order.HandleDelete)
+	v1auth.GET("/users/:userId/stats/orders", order.HandleStatsQuery)
 
 }

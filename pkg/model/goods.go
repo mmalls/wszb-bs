@@ -6,16 +6,18 @@ import (
 
 // Goods table
 type Goods struct {
-	ID            int       `gorm:"primary_key" json:"id"`
-	UserID        int       `json:"userId"`
-	ChannelID     int       `json:"channelId"`
-	Name          string    `json:"name"`
-	Catalog       string    `json:"catalog"`
-	Intro         string    `gorm:"size:512" json:"intro"`
-	SellPrice     float32   `json:"sellPrice"`
-	PurchasePrice float32   `json:"purchasePrice"`
-	CreatedAt     time.Time `json:"createdAt"`
-	UpdatedAt     time.Time `json:"updatedAt"`
+	ID            int        `gorm:"primary_key" json:"id"`
+	UserID        int        `json:"userId"`
+	ChannelID     int        `json:"channelId"`
+	Name          string     `json:"name"`
+	Catalog       string     `json:"catalog"`
+	Intro         string     `gorm:"size:512" json:"intro"`
+	SellPrice     float32    `json:"sellPrice"`
+	PurchasePrice float32    `json:"purchasePrice"`
+	Unit          string     `json:"unit"`
+	CreatedAt     time.Time  `json:"createdAt"`
+	UpdatedAt     time.Time  `json:"updatedAt"`
+	DeletedAt     *time.Time `json:"-"`
 }
 
 type GoodsWitchChl struct {
@@ -32,7 +34,7 @@ func (c *Goods) ListByUserID() (rows []GoodsWitchChl, err error) {
 	//err = db.Joins("user_id = ?", c.UserID).Find(&rows).Error
 	err = db.Table("wszb_goods").
 		Select("wszb_goods.*, wszb_channel.name as cn").
-		Where("wszb_goods.user_id = ?", c.UserID).
+		Where("wszb_goods.user_id = ?", c.UserID).Order("wszb_goods.id DESC").
 		Joins("left join wszb_channel on wszb_channel.id = wszb_goods.channel_id").
 		Scan(&rows).Error
 	return

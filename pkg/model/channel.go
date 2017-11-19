@@ -6,13 +6,14 @@ import (
 
 // Channel table
 type Channel struct {
-	ID        int       `gorm:"primary_key" json:"id"`
-	UserID    int       `json:"userId"`
-	Name      string    `json:"name"`
-	Phone     string    `gorm:"unique" json:"phone"`
-	Intro     string    `gorm:"size:512" json:"intro"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID        int        `gorm:"primary_key" json:"id"`
+	UserID    int        `json:"userId"`
+	Name      string     `json:"name"`
+	Phone     string     `gorm:"unique" json:"phone"`
+	Intro     string     `gorm:"size:512" json:"intro"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"-"`
 }
 
 // TableName ...
@@ -21,7 +22,7 @@ func (Channel) TableName() string {
 }
 
 func (c *Channel) ListByUserID() (rows []Channel, err error) {
-	err = db.Where("user_id = ?", c.UserID).Find(&rows).Error
+	err = db.Where("user_id = ?", c.UserID).Order("id DESC").Find(&rows).Error
 	return
 }
 

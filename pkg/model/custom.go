@@ -6,16 +6,17 @@ import (
 
 // Custom table
 type Custom struct {
-	ID        int       `gorm:"primary_key" json:"id"`
-	UserID    int       `json:"userId"`
-	Weixin    string    `json:"weixin"`
-	Phone     string    `gorm:"unique" json:"phone"`
-	Receiver  string    `json:"receiver"`
-	Address   string    `json:"address"`
-	PostCode  string    `json:"postCode"`
-	Notes     string    `gorm:"size:512" json:"notes"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID        int        `gorm:"primary_key" json:"id"`
+	UserID    int        `json:"userId"`
+	Weixin    string     `json:"weixin"`
+	Phone     string     `gorm:"unique" json:"phone"`
+	Receiver  string     `json:"receiver"`
+	Address   string     `json:"address"`
+	PostCode  string     `json:"postCode"`
+	Notes     string     `gorm:"size:512" json:"notes"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"-"`
 }
 
 // TableName ...
@@ -24,7 +25,7 @@ func (Custom) TableName() string {
 }
 
 func (c *Custom) ListByUserID() (rows []Custom, err error) {
-	err = db.Where("user_id = ?", c.UserID).Find(&rows).Error
+	err = db.Where("user_id = ?", c.UserID).Order("id DESC").Find(&rows).Error
 	return
 }
 

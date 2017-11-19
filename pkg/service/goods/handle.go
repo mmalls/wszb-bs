@@ -2,11 +2,11 @@ package goods
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mmalls/wszb-bs/pkg/g"
 	"github.com/mmalls/wszb-bs/pkg/model"
+	"github.com/mmalls/wszb-bs/pkg/service/util"
 	log "github.com/xtfly/log4g"
 )
 
@@ -19,9 +19,7 @@ func HandleList(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	o := &model.Goods{UserID: iuid}
+	o := &model.Goods{UserID: util.CvtDef(c.Param("userId"), 0)}
 	var row []model.GoodsWitchChl
 	if row, err = o.ListByUserID(); err != nil {
 		return
@@ -34,9 +32,7 @@ func HandleCreate(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	o := &model.Goods{UserID: iuid}
+	o := &model.Goods{UserID: util.CvtDef(c.Param("userId"), 0)}
 	if err = c.Bind(o); err != nil {
 		return
 	}
@@ -52,10 +48,7 @@ func HandleDelete(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	cid := c.Param("goodsId")
-	icid, _ := strconv.Atoi(cid)
-	o := &model.Goods{ID: icid}
-
+	o := &model.Goods{ID: util.CvtDef(c.Param("goodsId"), 0)}
 	if err := o.Delete(); err != nil {
 		return
 	}
@@ -67,10 +60,7 @@ func HandleGet(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	cid := c.Param("goodsId")
-	icid, _ := strconv.Atoi(cid)
-	o := &model.Goods{ID: icid}
-
+	o := &model.Goods{ID: util.CvtDef(c.Param("goodsId"), 0)}
 	if err = o.Get(); err != nil {
 		return
 	}
@@ -82,11 +72,8 @@ func HandleUpdate(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	cid := c.Param("goodsId")
-	icid, _ := strconv.Atoi(cid)
-	o := &model.Goods{ID: icid, UserID: iuid}
+	o := &model.Goods{ID: util.CvtDef(c.Param("goodsId"), 0),
+		UserID: util.CvtDef(c.Param("userId"), 0)}
 
 	if err = c.Bind(o); err != nil {
 		return

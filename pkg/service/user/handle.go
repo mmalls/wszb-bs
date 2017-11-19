@@ -10,8 +10,10 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/mmalls/wszb-bs/pkg/g"
 	"github.com/mmalls/wszb-bs/pkg/model"
+	"github.com/mmalls/wszb-bs/pkg/service/util"
 	"github.com/xtfly/log4g"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,7 +32,7 @@ func HandleCreate(c *gin.Context) {
 		return
 	}
 
-	if err = o.GetByPhone(); err != nil {
+	if err = o.GetByPhone(); err != nil && err != gorm.ErrRecordNotFound {
 		return
 	}
 
@@ -56,13 +58,12 @@ func HandleGet(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	cid := c.Param("userId")
-	uid, _ := strconv.Atoi(cid)
-	o := &model.User{ID: uid}
+	o := &model.User{ID: util.CvtDef(c.Param("userId"), 0)}
 
 	if err = o.Get(); err != nil {
 		return
 	}
+	o.Password = ""
 	c.JSON(http.StatusOK, o)
 }
 
@@ -77,7 +78,8 @@ func HandleLogin(c *gin.Context) {
 	}
 
 	u := &model.User{Phone: o.Phone}
-	if err = u.Get(); err != nil {
+	if err = u.GetByPhone(); err != nil {
+		err = g.UnauthErr(mlog, err)
 		return
 	}
 

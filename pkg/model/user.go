@@ -6,12 +6,13 @@ import (
 
 // User table
 type User struct {
-	ID        int       `gorm:"primary_key" json:"id"`
-	Name      string    `json:"name"`
-	Phone     string    `gorm:"unique" json:"phone"`
-	Password  string    `json:"-"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID        int        `gorm:"primary_key" json:"id"`
+	Name      string     `json:"name"`
+	Phone     string     `gorm:"unique" json:"phone"`
+	Password  string     `json:"password,omitempty"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"-"`
 }
 
 // TableName ...
@@ -59,7 +60,7 @@ func (c *LoginLog) Save() error {
 }
 
 func (c *LoginLog) ListByUserID() (rows []LoginLog, err error) {
-	err = db.Where("user_id = ?", c.UserID).Find(&rows).Error
+	err = db.Where("user_id = ?", c.UserID).Order("id DESC").Find(&rows).Error
 	return
 }
 

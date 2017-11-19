@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -42,10 +43,12 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r.Use(ginmw.Logger(hlog), gin.Recovery(), cors.Default())
+	pwd, _ := os.Getwd()
+	r.StaticFile("/", filepath.Join(pwd, "static", "index.html"))
+	r.Static("/static", filepath.Join(pwd, "static", "static"))
 	if err := service.Init(r); err != nil {
 		os.Exit(2)
 	}
-
 	comm.StartHTTP(hlog, &g.Cfg.Common, r, func() {
 		// stopped callback
 	})

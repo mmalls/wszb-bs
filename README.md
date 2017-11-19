@@ -24,3 +24,7 @@ http GET http://127.0.0.1:8443/rest/v1/users/1/goods/1
 
 http POST http://127.0.0.1:8443/rest/v1/users/1/orders customID:=1 goodsID:=1 sellPrice:=60.01
 http GET http://127.0.0.1:8443/rest/v1/users/1/orders/1
+
+
+
+http GET http://127.0.0.1:8443/rest/v1/users/1/stats/orders

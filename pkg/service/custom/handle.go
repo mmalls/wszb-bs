@@ -1,13 +1,12 @@
 package custom
 
 import (
-	"strconv"
-
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mmalls/wszb-bs/pkg/g"
 	"github.com/mmalls/wszb-bs/pkg/model"
+	"github.com/mmalls/wszb-bs/pkg/service/util"
 	log "github.com/xtfly/log4g"
 )
 
@@ -20,9 +19,7 @@ func HandleList(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	custom := &model.Custom{UserID: iuid}
+	custom := &model.Custom{UserID: util.CvtDef(c.Param("userId"), 0)}
 	var row []model.Custom
 	if row, err = custom.ListByUserID(); err != nil {
 
@@ -36,9 +33,7 @@ func HandleCreate(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	custom := &model.Custom{UserID: iuid}
+	custom := &model.Custom{UserID: util.CvtDef(c.Param("userId"), 0)}
 	if err = c.Bind(custom); err != nil {
 		return
 	}
@@ -54,10 +49,7 @@ func HandleDelete(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	cid := c.Param("customId")
-	icid, _ := strconv.Atoi(cid)
-	custom := &model.Custom{ID: icid}
-
+	custom := &model.Custom{ID: util.CvtDef(c.Param("customId"), 0)}
 	if err := custom.Delete(); err != nil {
 		return
 	}
@@ -69,10 +61,7 @@ func HandleGet(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	cid := c.Param("customId")
-	icid, _ := strconv.Atoi(cid)
-	custom := &model.Custom{ID: icid}
-
+	custom := &model.Custom{ID: util.CvtDef(c.Param("customId"), 0)}
 	if err = custom.Get(); err != nil {
 		return
 	}
@@ -84,11 +73,8 @@ func HandleUpdate(c *gin.Context) {
 	var err error
 	defer g.HandleErr(c, mlog, &err)
 
-	userID := c.Param("userId")
-	iuid, _ := strconv.Atoi(userID)
-	cid := c.Param("customId")
-	icid, _ := strconv.Atoi(cid)
-	custom := &model.Custom{ID: icid, UserID: iuid}
+	custom := &model.Custom{ID: util.CvtDef(c.Param("customId"), 0),
+		UserID: util.CvtDef(c.Param("userId"), 0)}
 
 	if err = c.Bind(custom); err != nil {
 		return

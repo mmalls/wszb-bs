@@ -1,6 +1,7 @@
 package g
 
 import (
+	"fmt"
 	"net/http"
 
 	"crypto/rsa"
@@ -30,6 +31,10 @@ type JWT struct {
 	VerifyKey  *rsa.PublicKey  `yaml:"-"`
 	SignKey    *rsa.PrivateKey `yaml:"-"`
 }
+
+var (
+	errUnauthErr = fmt.Errorf("UnauthErr")
+)
 
 // glabol vars
 var (
@@ -72,6 +77,8 @@ func HandleErr(c *gin.Context, mlog log.Logger, err *error) {
 		c.Status(http.StatusBadRequest)
 	} else if strings.Contains(e.Error(), "crypto/bcrypt: hashedPassword") {
 		c.Status(http.StatusUnauthorized)
+	} else if e == errUnauthErr {
+		c.Status(http.StatusUnauthorized)
 	} else if e == gorm.ErrRecordNotFound {
 		switch c.Request.Method {
 		case http.MethodGet, http.MethodPut:
@@ -86,4 +93,9 @@ func HandleErr(c *gin.Context, mlog log.Logger, err *error) {
 	}
 
 	mlog.Error(*err)
+}
+
+func UnauthErr(mlog log.Logger, err error) error {
+	mlog.Error(err)
+	return errUnauthErr
 }
